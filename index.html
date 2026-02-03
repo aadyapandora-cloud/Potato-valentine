@@ -1,0 +1,240 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MINTON, Will You Be My Valentine? 🥹</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #ffe6ef, #fff);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+    .card {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      max-width: 440px;
+      width: 92%;
+      animation: fadeIn 0.6s ease;
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes fadeIn { from {opacity:0; transform:translateY(10px);} to {opacity:1;} }
+    h1,h2 { color:#ff4d79; }
+    p { color:#555; }
+    button {
+      border:none; padding:12px 28px; border-radius:30px;
+      font-size:1rem; cursor:pointer; margin-top:1rem;
+    }
+    .primary { background:#ff4d79; color:white; font-weight:600; }
+    .hidden { display:none; }
+    .buttons { position:relative; height:120px; }
+    #no { position:absolute; background:#eee; color:#555; left:55%; }
+
+    /* Memory grid */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 1.2rem;
+    }
+    .memory {
+      position: relative;
+      width: 100%;
+      height: 140px;
+      border-radius: 14px;
+      background: #ffd6e3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      font-weight: 600;
+      color: #ff4d79;
+    }
+    .memory img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .memory.revealed img { display:block; }
+    .memory.revealed span { display:none; }
+
+    /* Date options */
+    .date-option {
+      border: 2px solid #ffd6e3;
+      border-radius: 14px;
+      padding: 12px;
+      margin: 10px 0;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .date-option:hover { background: #fff0f6; }
+    .date-option.selected {
+      background: #ff4d79;
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Coffee confetti (ONLY celebration) */
+    #coffee-confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .coffee {
+      position: absolute;
+      top: -40px;
+      font-size: 26px;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Question -->
+<div class="card" id="question">
+  <h1>Guttubaba, will you be my Valentine? 💖</h1>
+  <p>Official invite from someone hopelessly in love with you from 1400 kms away</p>
+  <div class="buttons">
+    <button class="primary" id="yes">YES 💘</button>
+    <button id="no">No 😤</button>
+  </div>
+</div>
+
+<!-- Result -->
+<div class="card hidden" id="result">
+  <h2>Good choice, my Potato 🥰</h2>
+  <p>You just unlocked unlimited hugs, kisses & cuddles.</p>
+  <button class="primary" onclick="next('letter')">Next 💌</button>
+</div>
+
+<!-- Love Letter -->
+<div class="card hidden" id="letter">
+  <h2>A letter for you, meri jaan 💌</h2>
+  <div style="font-size:4rem;cursor:pointer" onclick="toggleLetter()">✉️</div>
+  <p id="letterText" class="hidden">
+    I love you in a way that would worry a therapist<br>and thrill a poet.<br><br>
+    You are the person I want to have million adventures with, dance in the kitchen with, kiss in the rain, and wake up next to every morning.<br><br>
+    Care for you when you are sick, have long walks that end with a cup of coffee, watch movies while being cuddled up, sing with, laugh with, and cry with.<br><br>
+    The fall-in-love-over-and-over-again kind of relationship.<br><br>
+    I love who you are now, I believe in who you are becoming, and I will stay for it all.<br><br>
+    You are my person ♥️
+  </p>
+  <button class="primary" onclick="next('memory')">Next 📸</button>
+</div>
+
+<!-- Memory -->
+<div class="card hidden" id="memory">
+  <h2>Some of my favorite memories of you, my Taipo 📸</h2>
+  <p>(Click each one to reveal)</p>
+  <div class="memory-grid">
+    <div class="memory" onclick="reveal(this)">
+      <span>Tap to reveal 💕</span>
+      <img src="20250501_122450.heic" />
+    </div>
+    <div class="memory" onclick="reveal(this)">
+      <span>Tap to reveal 💕</span>
+      <img src="20250913_142305.heic" />
+    </div>
+    <div class="memory" onclick="reveal(this)">
+      <span>Tap to reveal 💕</span>
+      <img src="20251004_165630.jpg" />
+    </div>
+    <div class="memory" onclick="reveal(this)">
+      <span>Tap to reveal 💕</span>
+      <img src="20251119_171805.heic" />
+    </div>
+  </div>
+  <button class="primary" onclick="next('music')">Next 🎵</button>
+</div>
+
+<!-- Music -->
+<div class="card hidden" id="music">
+  <h2>Our soundtrack 🎶</h2>
+  <p>Songs that remind me of you, my hottie bf 💋</p>
+  <iframe id="spotifyPlayer" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/6rLVnrBxPIzd6JcGniBEnp" width="100%" height="352" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+  <button class="primary" onclick="next('date')">Next 💕</button>
+</div>
+
+<!-- Date -->
+<div class="card hidden" id="date">
+  <h2>Choose our Valentine date 💕</h2>
+  <div class="date-option" onclick="selectDate(this,'Netflix party + video call')">🍿 Netflix party + video call</div>
+  <div class="date-option" onclick="selectDate(this,'Order the same food & judge each other')">🍕 Order the same food & judge each other</div>
+  <div class="date-option" onclick="selectDate(this,'Late night calls till we fall asleep')">🌙 Late night calls till we fall asleep</div>
+  <div class="date-option" onclick="selectDate(this,'Games together')">🎮 Games together (I win, obviously)</div>
+  <div class="date-option" onclick="selectDate(this,'Virtual coffee date')">☕ Virtual coffee date pretending we’re fancy</div>
+</div>
+
+<!-- Celebration -->
+<div class="card hidden" id="celebrate">
+  <h1>☕ IT’S A DATE ☕</h1>
+  <p id="chosenDate"></p>
+  <p>I can’t wait, Potato 💖</p>
+  <p style="margin-top:1rem; font-weight:600; color:#ff4d79;">Send me a screenshot 😌</p>
+</div>
+
+<div id="coffee-confetti" class="hidden"></div>
+
+<script>
+const noBtn = document.getElementById('no');
+noBtn.addEventListener('mouseenter', () => {
+  noBtn.style.left = Math.random() * 250 + 'px';
+  noBtn.style.top = Math.random() * 80 + 'px';
+});
+
+const yesBtn = document.getElementById('yes');
+yesBtn.onclick = () => { show('result'); };
+
+function show(id) {
+  document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+function next(id) { show(id); }
+function toggleLetter() {
+  document.getElementById('letterText').classList.toggle('hidden');
+}
+function reveal(el) { el.classList.add('revealed'); }
+
+function selectDate(el, text) {
+  document.querySelectorAll('.date-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('chosenDate').innerText = `You chose: ${text}`;
+  setTimeout(() => {
+    show('celebrate');
+    startCoffeeConfetti();
+  }, 600);
+}
+
+function startCoffeeConfetti() {
+  const container = document.getElementById('coffee-confetti');
+  container.classList.remove('hidden');
+  container.innerHTML = '';
+  for (let i = 0; i < 40; i++) {
+    const coffee = document.createElement('div');
+    coffee.className = 'coffee';
+    coffee.innerText = ['☕','🍵','🤎'][Math.floor(Math.random()*3)];
+    coffee.style.left = Math.random() * 100 + 'vw';
+    coffee.style.animationDuration = 2 + Math.random() * 3 + 's';
+    container.appendChild(coffee);
+  }
+  setTimeout(() => container.classList.add('hidden'), 5000);
+}
+</script>
+
+</body>
+</html>
